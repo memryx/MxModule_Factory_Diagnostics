@@ -275,7 +275,7 @@ model_explorer_yolov8l-cls_local_model , PASS, 168.685
 model_explorer_yolov8l-cls_local_model                          , PASS, 168.685
 
 log/performance_result.csv
-log/performance_gloden.csv
+log/performance_golden.csv
 log/performance_compare.csv
 10-02 11:02:42: Test Finished
 ```

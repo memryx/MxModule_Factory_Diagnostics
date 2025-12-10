@@ -6,7 +6,7 @@ import numpy  as np
 import math
 import csv
 def result_processing(result_file):
-    gloden_file = 'performance_gloden.csv'
+    gloden_file = 'performance_golden.csv'
     compare_file = 'performance_compare.csv'
     result_path = Path(result_file)
     gloden_path = Path(result_path.parent, gloden_file)
