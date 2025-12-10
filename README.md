@@ -83,11 +83,12 @@ This system is x86_64 system. Preparation is done.
 ./environment_prepare_usb.sh
 ```
 
-### NOTE
+### Firmware Prerequisite
 
 Place the **latest public SDK release firmware image** in the path below.  
 The latest firmware files are available in the following repository: [MX3 Driver Public Repo](https://github.com/memryx/mx3_driver_pub/tree/release/firmware)
 
+> **Note:** Select the correct module firmware file for the build line (e.g., `cascade_4chips_flash.bin` or `cascade_2chips_flash.bin`), then copy it as `cascade.bin`.
 ```
 MxModule_Factory_Diagnostics/3_flashupdate/cascade.bin
 ```
