@@ -296,15 +296,15 @@ s32 memx_init_msix_irq(struct memx_pcie_dev *memx_dev)
 				pci_free_irq_vectors(memx_dev->pDev);
 			}
 
-			pr_info("memryx: init_msi/msix irq: pci_alloc_irq_vectors(%d) Try using Legacy interrupt\n", irq_request_or_err);
+			// pr_info("memryx: init_msi/msix irq: pci_alloc_irq_vectors(%d) Try using Legacy interrupt\n", irq_request_or_err);
 
-			irq_request_or_err = pci_alloc_irq_vectors(memx_dev->pDev, 1, 1, PCI_IRQ_LEGACY);
-			if (irq_request_or_err <= 0) {
+			// irq_request_or_err = pci_alloc_irq_vectors(memx_dev->pDev, 1, 1, PCI_IRQ_LEGACY);
+			// if (irq_request_or_err <= 0) {
 				pr_err("memryx: ini pcie legacy irq: fail to call pci_alloc_irq_vectors(%d)\n", irq_request_or_err);
 				return -1;
-			} else {
-				pr_info("memryx: alloc legacy %d", irq_request_or_err);
-			}
+			// } else {
+			// 	pr_info("memryx: alloc legacy %d", irq_request_or_err);
+			// }
 		} else {
 			pr_info("memryx: alloc msi %d", irq_request_or_err);
 		}
