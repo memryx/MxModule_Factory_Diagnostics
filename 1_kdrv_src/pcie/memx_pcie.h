@@ -11,7 +11,7 @@
 #include "memx_fs.h"
 #include "memx_xflow.h"
 
-#define PCIE_VERSION "1.3.4"
+#define PCIE_VERSION "1.3.4_1"
 #define SDK_RELEASE_VERSION "2.0"
 
 #define PCIE_NAME "memx_pcie_ai_chip"

@@ -17,6 +17,8 @@ The intended manufacturing workflow assumes the DUT’s flash is initially empty
 
 ```
 sudo apt remove memx-drivers
+sudo rmmod memx_cascade_plus_pcie
+
 ```
 
 ### 2. Prepare the environment and build kernel/user drivers
@@ -39,38 +41,53 @@ Run the appropriate environment script:
 <summary>Sample output from environment_prepare_pcie.sh</summary>
 
 ```
-memryx@memryx-E500-G9-WS760T:~/MxModule_Factory_Diagnostics$ ./environment_prepare_pcie.sh
-make -C /lib/modules/6.8.0-84-generic/build M=/home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src clean
-make[1]: Entering directory '/usr/src/linux-headers-6.8.0-84-generic'
-  CLEAN   /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/Module.symvers
-make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-84-generic'
-sudo rm -rf *.out app
-make -C /lib/modules/6.8.0-84-generic/build M=/home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src EXTRA_CFLAGS="-I/home/memryx/klinschen/MxModule_Factory_Diagnostics/1_kdrv_src/../../include" modules
-make[1]: Entering directory '/usr/src/linux-headers-6.8.0-84-generic'
-warning: the compiler differs from the one used to build the kernel
-  The kernel was built by: x86_64-linux-gnu-gcc-12 (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
-  You are using:           gcc-12 (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_feature.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_xflow.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_msix_irq.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_cascade_pciemain.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_fw_cmd.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_fw_init.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_pcie_dev_list_ctrl.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_fs_proc.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_fs_sys.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_fs.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_fw_log.o
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_fs_hwmon.o
-  LD [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_cascade_plus_pcie.o
-  MODPOST /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/Module.symvers
-  CC [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_cascade_plus_pcie.mod.o
-  LD [M]  /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_cascade_plus_pcie.ko
-  BTF [M] /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_cascade_plus_pcie.ko
-Skipping BTF generation for /home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/memx_cascade_plus_pcie.ko due to unavailability of vmlinux
-make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-84-generic'
-gcc memx_pcie_test.c -o app -I/home/memryx/MxModule_Factory_Diagnostics/1_kdrv_src/../../include
-This system is x86_64 system. Preparation is done.
+[2025-12-15 15:36:30] [INFO] Working directory: /home/memryx/MxModule_Factory_Diagnostics
+[2025-12-15 15:36:30] [INFO] Build log: /home/memryx/MxModule_Factory_Diagnostics/preparation_logs/prepare_20251215_153630.log
+[2025-12-15 15:36:30] [INFO] Mode: QUIET
+[2025-12-15 15:36:30] [INFO] Detected architecture: x86_64
+
+[15:36:30] ▶ Firmware
+[2025-12-15 15:36:30] [INFO] Copying diagnostics firmware to /lib/firmware/cascade.bin
+[2025-12-15 15:36:30] [INFO] SUDO: cp ./0_fwimage/cascade_diag.bin /lib/firmware/cascade.bin 
+
+[15:36:30] ▶ Cleanup (best-effort)
+[2025-12-15 15:36:30] [INFO] Removing memx-drivers (best-effort)
+[2025-12-15 15:36:30] [INFO] SUDO: apt remove -y memx-drivers 
+[2025-12-15 15:36:31] [INFO] Unloading kernel module memx_cascade_plus_pcie (best-effort)
+[2025-12-15 15:36:31] [WARN] Kernel module memx_cascade_plus_pcie not loaded; skipping rmmod
+
+[15:36:31] ▶ Kernel Driver (pcie)
+[2025-12-15 15:36:31] [INFO] Building kernel driver (pcie)
+[2025-12-15 15:36:31] [INFO] MAKE: make clean 
+[2025-12-15 15:36:31] [INFO] MAKE: make all 
+[2025-12-15 15:36:35] [INFO] RUN: cp ./memx_cascade_plus_pcie.ko ../memx_cascade_plus.ko 
+[2025-12-15 15:36:35] [INFO] MAKE: make clean 
+
+[15:36:35] ▶ System Paths
+[2025-12-15 15:36:35] [INFO] Ensuring /usr/include/memx exists
+[2025-12-15 15:36:35] [INFO] SUDO: mkdir -p /usr/include/memx 
+[2025-12-15 15:36:35] [INFO] Removing old flash tool directory (if present)
+[2025-12-15 15:36:35] [INFO] RUN: rm -rf ./3_flashupdate/memx_usb_update_flash_tool 
+
+[15:36:35] ▶ User Libraries & Tools (x86_64)
+[2025-12-15 15:36:35] [INFO] Configuring for x86_64
+[2025-12-15 15:36:35] [INFO] SUDO: cp ./2_udrv_lib/x86_64/libmemx.so /usr/lib/ 
+[2025-12-15 15:36:35] [INFO] SUDO: cp ./2_udrv_lib/x86_64/memx.h /usr/include/memx/ 
+[2025-12-15 15:36:35] [INFO] RUN: cp -f ./3_flashupdate/x86_64/pcieupdateflash ./3_flashupdate/pcieupdateflash 
+[2025-12-15 15:36:35] [INFO] RUN: cp -f ./3_flashupdate/x86_64/read_fwver ./3_flashupdate/read_fwver 
+[2025-12-15 15:36:35] [INFO] RUN: cp -f ./3_flashupdate/x86_64/check_version ./3_flashupdate/check_version 
+
+[15:36:35] ▶ Python Module
+[2025-12-15 15:36:35] [INFO] Building pymodule
+[2025-12-15 15:36:35] [INFO] MAKE: make clean 
+[2025-12-15 15:36:35] [INFO] MAKE: make all 
+[2025-12-15 15:36:36] [INFO] RUN: cp -r ./bin/mxa.cpython-312-x86_64-linux-gnu.so ../../4_testsuit/ 
+[2025-12-15 15:36:36] [INFO] MAKE: make clean 
+
+[15:36:36] ▶ Done
+[2025-12-15 15:36:36] [INFO] Preparation is done.
+[2025-12-15 15:36:36] [INFO] Full log: /home/memryx/MxModule_Factory_Diagnostics/preparation_logs/prepare_20251215_153630.log
+
 
 ```
 
@@ -83,7 +100,7 @@ This system is x86_64 system. Preparation is done.
 ./environment_prepare_usb.sh
 ```
 
-### Firmware Prerequisite
+### 3. Firmware Prerequisite
 
 Place the **latest public SDK release firmware image** in the path below.  
 The latest firmware files are available in the following repository: [MX3 Driver Public Repo](https://github.com/memryx/mx3_driver_pub/tree/release/firmware)
@@ -97,6 +114,14 @@ MxModule_Factory_Diagnostics/3_flashupdate/cascade.bin
 
 Ensure the firmware image corresponds to the correct release version.
 Incorrect firmware may render devices non-functional.
+
+### 4. Third-party lib install
+
+Install pandas lib as a prerequisite to run the ral model inference test (`./r3_4chip.sh` or `./r3_2chip.sh`)
+
+```
+sudo apt-get install python3-pandas
+```
 
 ---
 

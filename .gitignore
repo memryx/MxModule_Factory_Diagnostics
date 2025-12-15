@@ -1,0 +1,8 @@
+*.so
+__pycache__
+*.csv
+3_flashupdate/check_version
+3_flashupdate/pcieupdateflash
+3_flashupdate/read_fwver
+*.ko
+preparation_logs
